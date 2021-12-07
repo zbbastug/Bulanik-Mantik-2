@@ -1,0 +1,91 @@
+FUNCTION_BLOCK model
+
+VAR_INPUT
+	acikrenkyogunlugu: REAL;
+	koyurenkyogunlugu: REAL;
+	ortamisikyogunlugu: REAL;
+END_VAR
+
+VAR_OUTPUT
+	ekranparlakligi: REAL;
+END_VAR
+
+FUZZIFY acikrenkyogunlugu
+
+	TERM az := (0,0)(25,1)(50,0);
+	TERM orta := (25,0)(50,1)(75,0);
+	TERM fazla := trape 50 75 100 100;
+	
+END_FUZZIFY
+
+FUZZIFY koyurenkyogunlugu
+
+	TERM az :=(50,0)(75,1)(100,0);
+	TERM orta := (25,0)(50,1)(75,0);
+	TERM fazla := trape 0 0 25 50;
+	
+END_FUZZIFY
+
+
+FUZZIFY ortamisikyogunlugu
+
+	TERM az:= trape 0 0 500 1000;
+	TERM orta:= (1000,0)(2000,1)(3000,0);
+	TERM fazla:= trape 2000 3000 5000 5000;
+	
+END_FUZZIFY
+
+DEFUZZIFY ekranparlakligi
+
+	TERM az := trape 0 0 100 150;
+	TERM orta := (100,0)(150,1)(200,0);
+	TERM fazla := trape 150 200 300 300;
+	
+	METHOD: COG;
+	DEFAULT:= 100;
+END_DEFUZZIFY
+
+RULEBLOCK kuralblock1
+	AND	: MIN;
+	ACT : MIN;
+	ACCU : MAX;
+	
+	RULE 1: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is az AND ortamisikyogunlugu is az THEN ekranparlakligi is az;
+	RULE 2: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is az AND ortamisikyogunlugu is orta THEN ekranparlakligi is az;
+	RULE 3: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is az AND ortamisikyogunlugu is fazla THEN ekranparlakligi is az;
+	
+	RULE 4: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is az THEN ekranparlakligi is az;
+	RULE 5: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is orta THEN ekranparlakligi is az;
+	RULE 6: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is fazla THEN ekranparlakligi is az;
+	
+	RULE 7: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is az THEN ekranparlakligi is az;
+	RULE 8: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is orta THEN ekranparlakligi is az;
+	RULE 9: IF acikrenkyogunlugu is az AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is fazla THEN ekranparlakligi is az;
+	
+	RULE 10: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is az AND ortamisikyogunlugu is az THEN ekranparlakligi is az; 
+	RULE 11: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is az AND ortamisikyogunlugu is orta THEN ekranparlakligi is orta;
+	RULE 12: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is az AND ortamisikyogunlugu is fazla THEN ekranparlakligi is orta;
+	
+	RULE 13: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is az THEN ekranparlakligi is az; 
+	RULE 14: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is orta THEN ekranparlakligi is orta;
+	RULE 15: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is fazla THEN ekranparlakligi is orta;
+
+	RULE 16: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is az THEN ekranparlakligi is az;
+	RULE 17: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is orta THEN ekranparlakligi is orta;
+	RULE 18: IF acikrenkyogunlugu is orta AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is fazla THEN ekranparlakligi is orta;
+
+	RULE 19: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is az AND ortamisikyogunlugu is az THEN ekranparlakligi is az;
+	RULE 20: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is az AND ortamisikyogunlugu is orta THEN ekranparlakligi is orta;
+	RULE 21: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is az AND ortamisikyogunlugu is fazla THEN ekranparlakligi is fazla;
+
+	RULE 22: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is az THEN ekranparlakligi is orta;
+	RULE 23: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is orta THEN ekranparlakligi is fazla;
+	RULE 24: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is orta AND ortamisikyogunlugu is fazla THEN ekranparlakligi is fazla;
+
+    RULE 25: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is az THEN ekranparlakligi is orta;
+	RULE 26: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is orta THEN ekranparlakligi is orta;
+	RULE 27: IF acikrenkyogunlugu is fazla AND koyurenkyogunlugu is fazla AND ortamisikyogunlugu is fazla THEN ekranparlakligi is fazla;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
